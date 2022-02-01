@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import { Button } from "./components/button";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useCallback, useState } from "react";
+import { images, IMAGE_ARRAY_LENGTH } from "./config/images";
 function App() {
+  const [counter, setCounter] = useState<number>(0);
+
+  const handleAdvanceButton = useCallback(async () => {
+    if(counter >= IMAGE_ARRAY_LENGTH - 1) {
+      setCounter(0);
+      return;
+    }
+    setCounter(counter + 1);
+  }, [counter, setCounter]);
+
+  const handleGetBackCounter = useCallback(async () => {
+    if(counter === 0) {
+      setCounter(IMAGE_ARRAY_LENGTH - 1);
+      return
+    }
+    setCounter(counter - 1);
+  }, [counter, setCounter]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Button
+        icon={<FiChevronLeft />}
+        handleClickButton={handleGetBackCounter}
+      />
+      <img src={images[counter].image} alt={images[counter].image} />
+      <Button
+        icon={<FiChevronRight />}
+        handleClickButton={handleAdvanceButton}
+      />
+    </>
   );
 }
 
